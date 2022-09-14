@@ -1,0 +1,26 @@
+create table securityQustion(id int primary key auto_increment, Qustion varchar(255) );
+create table user ( id int primary key auto_increment,name varchar(50)not null,email varchar(50) not null unique,mobile varchar(10) unique, gender bit, password varchar(255) not null, user_type bit,security_qstion_id int null,security_qstion_and varchar(255) );
+ALTER TABLE user MODIFY password varchar(255) NULL;
+alter table user add column isActive bit;
+alter table user add foreign key(security_qstion_id ) references securityQustion(id);
+alter table user modify user_type int;
+
+
+CREATE TABLE courses ( `id` INT NOT NULL AUTO_INCREMENT , `course` VARCHAR(255) NOT NULL, fee decimal not null , `active` BIT(2) NOT NULL , PRIMARY KEY (`id`)) 
+CREATE TABLE `enquery` (  `id` int NOT NULL AUTO_INCREMENT,  `name` varchar(255) NOT NULL,  `fatherName` varchar(255) NOT NULL,  `DOB` date DEFAULT NULL,  `course` int NOT NULL,  `mobile1` varchar(12) NOT NULL,  `mobile2` varchar(12) DEFAULT NULL,  `email` varchar(30) DEFAULT NULL,  `district` int DEFAULT NULL,  `state` int DEFAULT NULL,  `pincode` varchar(6) DEFAULT NULL,  `address` text NOT NULL,  `session_id` int DEFAULT NULL,  `gender` bit(1) DEFAULT NULL,  PRIMARY KEY (`id`),  KEY `course` (`course`),  KEY `district` (`district`),  KEY `state` (`state`),  KEY `session_id` (`session_id`), FOREIGN KEY (`course`) REFERENCES `courses` (`id`), FOREIGN KEY (`district`) REFERENCES `cities` (`id`), FOREIGN KEY (`state`) REFERENCES `states` (`id`), FOREIGN KEY (`session_id`) REFERENCES `session` (`id`))
+//alter table enquery add column session_id int,add column gender bit , add foreign key(session_id) references session(id);
+CREATE TABLE students( id int PRIMARY KEY AUTO_INCREMENT,name varchar(20) NOT NULL,fatherName varchar(20) NOT NULL,motherName varchar(20) NOT NULL,gender bit(2) NOT NULL,email varchar(30),mobile1 varchar(20) NOT NULL,mobile2 varchar(20) ,dob date,doa date,state_id int,cities_id int, address varchar(255) NOT NULL,course_id int,session_id int,FOREIGN KEY(state_id)  REFERENCES states(id),FOREIGN KEY(cities_id)  REFERENCES states(id), FOREIGN KEY(course_id) REFERENCES courses(id), FOREIGN KEY(session_id) REFERENCES courses(id) );
+alter table students add column photo mediumblob;
+alter table students add column my_id varchar(20);
+alter table students add constraint semUinq unique (my_id)  ;
+CREATE TABLE subjects (id int PRIMARY KEY AUTO_INCREMENT,name varchar(100)NOT NUll,course_id int, FOREIGN KEY(course_id) REFERENCES courses(id));
+CREATE TABLE `employeetype` ( `id` int NOT NULL AUTO_INCREMENT,`employeeType` varchar(30) NOT NULL,`salary` float NOT NULL, PRIMARY KEY (`id`));
+CREATE TABLE employees( id int PRIMARY KEY AUTO_INCREMENT,name varchar(20) NOT NULL,fatherName varchar(20) NOT NULL,motherName varchar(20) NOT NULL,gender bit(2) NOT NULL,email varchar(30) unique,mobile1 varchar(20) NOT NULL unique,mobile2 varchar(20) unique ,dob date,doj date,state_id int,cities_id int, address varchar(255) NOT NULL,FOREIGN KEY(state_id)  REFERENCES states(id),FOREIGN KEY(cities_id)  REFERENCES cities(id));
+alter table employees add column photo mediumblob;
+alter table employees add column employee_type_id int ,add foreign key(employee_type_id) references employeetype(id);
+create table empdoc (id int auto_increment primary key , emp_id int,doc_title varchar(100),document mediumblob,foreign key(emp_id) references employees(id));
+CREATE TABLE `guijdbc`.`employeetype` ( `id` INT NOT NULL AUTO_INCREMENT , `employeeType` VARCHAR(30) NOT NULL , `salary` FLOAT NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+create table feedetails(id int primary key auto_increment , student_id int  , amount decimal , `date` date, foreign key(student_id) references students(id)on delete cascade );
+
+create table session(id int auto_increment primary key, name varchar(100) )
+create table stddocument( id int auto_increment primary key ,student_id int,doc_title varchar(100) ,document mediumblob, foreign key(student_id) references students(id)on delete cascade );
